@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
 }
 .search-bar{
     display: flex;
@@ -66,4 +67,9 @@
 .Error-Text{
     color: #ddd;
     font-weight: 600;
+}
+@media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
 }

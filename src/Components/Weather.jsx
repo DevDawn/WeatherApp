@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Weather.css';
 import search_icon from '../assets/search.png';
 import clear_icon from '../assets/clear.png';
@@ -14,18 +14,23 @@ const Weather = () => {
     const [weatherData, setWeatherData] = useState(null); // For weather data
 
     const allIcons = {
-        "01d": clear_icon,
-        "01n": clear_icon,
-        "02d": cloud_icon,
-        "03d": cloud_icon,
-        "03n": cloud_icon,
-        "04d": drizzle_icon,
-        "04n": drizzle_icon,
-        "09d": rain_icon,
-        "10d": rain_icon,
-        "10n": rain_icon,
-        "13d": snow_icon,
-        "13n": snow_icon,
+        "hot": clear_icon,   // Hot weather
+        "warm": cloud_icon,  // Warm weather
+        "cool": drizzle_icon, // Cool weather
+        "cold": snow_icon,   // Cold weather
+        // Other icons can be added as needed
+    };
+
+    const getWeatherIcon = (temperature) => {
+        if (temperature > 30) {
+            return allIcons.hot; // Hot weather
+        } else if (temperature > 20) {
+            return allIcons.warm; // Warm weather
+        } else if (temperature > 10) {
+            return allIcons.cool; // Cool weather
+        } else {
+            return allIcons.cold; // Cold weather
+        }
     };
 
     const fetchLocationData = async (cityName) => {
@@ -60,12 +65,13 @@ const Weather = () => {
             if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
 
             const data = await response.json();
+            const temperature = data.current_weather.temperature;
             setWeatherData({
-                temperature: data.current_weather.temperature,
+                temperature: temperature,
                 windSpeed: data.current_weather.windspeed,
-                humidity: data.current_weather.humidity, // Add humidity
+                humidity: data.current_weather.humidity,
                 location: cityName,
-                icon: allIcons[data.current_weather.weathercode] || clear_icon // Use weather icons
+                icon: getWeatherIcon(temperature) // Use the temperature-based icon
             });
         } catch (error) {
             console.error("Error fetching weather data:", error);
