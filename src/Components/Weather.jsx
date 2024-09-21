@@ -47,7 +47,7 @@ const Weather = () => {
                 const longitude = location.longitude;
 
                 // Fetch the weather data using latitude and longitude
-                fetchWeatherData(latitude, longitude, cityName);
+                fetchWeatherData(latitude, longitude, location.admin1+"/"+location.country);
             } else {
                 console.log("No results found.");
                 setWeatherData(null); // Clear weather data if no results
